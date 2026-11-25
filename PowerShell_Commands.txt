@@ -1,0 +1,145 @@
+PROJECT: Design and Implementation of Secure FTP Server using SFTP
+
+Students: Uzair Ahmad and Abdullah Majeed
+Server IP: 192.168.10.11
+Client IP: 192.168.10.7
+SSH/SFTP Port: 22
+
+==================================================
+1. CHECK NETWORK CONFIGURATION
+==================================================
+
+ipconfig
+
+==================================================
+2. CHECK OPENSSH SERVER INSTALLATION
+==================================================
+
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH.Server*'
+
+==================================================
+3. CHECK SSH SERVICE STATUS
+==================================================
+
+Get-Service sshd
+
+==================================================
+4. START SSH SERVICE
+==================================================
+
+Start-Service sshd
+
+==================================================
+5. SET SSH SERVICE TO AUTOMATIC
+
+==================================================
+
+Set-Service -Name sshd -StartupType Automatic
+
+==================================================
+6. CHECK SSH FIREWALL RULES
+==================================================
+
+Get-NetFirewallRule | Where-Object DisplayName -Like '*SSH*'
+
+==================================================
+7. ALLOW SSH PORT 22 THROUGH FIREWALL
+==================================================
+
+New-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
+
+==================================================
+8. OPEN SSH CONFIGURATION FILE
+==================================================
+
+notepad C:\ProgramData\ssh\sshd_config
+
+==================================================
+9. VIEW SSH CONFIGURATION
+==================================================
+
+Get-Content C:\ProgramData\ssh\sshd_config
+
+==================================================
+10. RESTART SSH SERVICE
+==================================================
+
+Restart-Service sshd
+
+==================================================
+11. CHECK SSH SERVICE AFTER CONFIGURATION
+==================================================
+
+Get-Service sshd
+
+==================================================
+12. TEST SERVER CONNECTION
+==================================================
+
+Test-NetConnection 192.168.10.11 -Port 22
+
+==================================================
+13. TEST SSH LOGIN
+==================================================
+
+ssh ali@192.168.10.11
+
+==================================================
+14. TEST SFTP CONNECTION
+==================================================
+
+sftp ali@192.168.10.11
+
+==================================================
+15. PROJECT CONFIGURATION DETAILS
+==================================================
+
+Operating System: Windows
+SSH Server: OpenSSH Server
+SFTP Client: WinSCP
+Protocol: SFTP over SSH
+Default SSH/SFTP Port: TCP 22
+SSH Service Name: sshd
+SSH Configuration File: C:\ProgramData\ssh\sshd_config
+
+==================================================
+16. CHECK USER ACCOUNTS
+==================================================
+
+Get-LocalUser
+
+==================================================
+17. CHECK SFTP DIRECTORY
+==================================================
+
+Get-ChildItem "C:\SFTP"
+
+==================================================
+18. CHECK DIRECTORY PERMISSIONS
+==================================================
+
+Get-Acl "C:\SFTP" | Format-List
+
+==================================================
+19. CHECK USER-SPECIFIC DIRECTORY PERMISSIONS
+==================================================
+
+Get-Acl "C:\SFTP\Main\ali" | Format-List
+
+==================================================
+20. CHECK SSH CONFIGURATION FOR USER RESTRICTIONS
+==================================================
+
+Select-String -Path "C:\ProgramData\ssh\sshd_config" -Pattern "Match User|ForceCommand|AllowTcpForwarding|PermitTTY|PasswordAuthentication"
+
+==================================================
+21. CHECK SSH SERVICE STATUS
+==================================================
+
+Get-Service sshd
+
+==================================================
+22. TEST SFTP CONNECTION FOR A USER
+==================================================
+
+sftp ali@192.168.10.11
